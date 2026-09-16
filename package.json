@@ -1,0 +1,35 @@
+{
+  "name": "simple-test-email-sender",
+  "version": "1.0.0",
+  "description": "A simple web application for testing email sending functionality securely",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node test-api.js",
+    "predeploy": "echo 'No build step; deploying public/'",
+    "deploy": "npx gh-pages -d public"
+  },
+  "homepage": "https://mohanavamsi14.github.io/email-sender",
+  "keywords": [
+    "email",
+    "test",
+    "nodemailer",
+    "gmail",
+    "express"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.3.1",
+    "helmet": "^7.1.0",
+    "nodemailer": "^10.0.10"
+  },
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
+  }
+}

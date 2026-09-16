@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Email Sender | Developer Utility</title>
+  <meta name="description" content="Quick, secure web application for testing email sending functionality without exposing credentials.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="background-glow"></div>
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+
+  <main class="app-container">
+    <header class="app-header">
+      <div class="logo-badge">
+        <svg class="mail-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+      </div>
+      <h1 class="app-title">Test Email Sender</h1>
+      <p class="app-subtitle">Dispatch test emails quickly and securely from your authorized backend</p>
+    </header>
+
+    <div class="card glass-card">
+      <form id="email-form" novalidate>
+        
+        <!-- Sender Name Field (Optional) -->
+        <div class="form-group" id="group-sender-name">
+          <label for="sender-name" class="form-label">
+            <span>Sender Display Name</span>
+            <span class="optional-tag">(Optional)</span>
+          </label>
+          <div class="input-wrapper">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <input 
+              type="text" 
+              id="sender-name" 
+              name="senderName"
+              class="form-control" 
+              placeholder="e.g. Test Email Sender" 
+              value="Test Email Sender"
+            >
+          </div>
+        </div>
+
+        <!-- Recipient Email Field -->
+        <div class="form-group" id="group-email">
+          <label for="recipient-email" class="form-label">
+            <span>Recipient Email</span>
+            <span class="required-star">*</span>
+          </label>
+          <div class="input-wrapper">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <input 
+              type="email" 
+              id="recipient-email" 
+              name="email"
+              class="form-control" 
+              placeholder="e.g. test@example.com" 
+              autocomplete="email"
+              required
+            >
+          </div>
+          <div class="field-error" id="email-error" role="alert">Please enter a valid email address.</div>
+        </div>
+
+        <!-- Subject Field (Optional) -->
+        <div class="form-group" id="group-subject">
+          <label for="email-subject" class="form-label">
+            <span>Subject</span>
+            <span class="optional-tag">(Optional)</span>
+          </label>
+          <div class="input-wrapper">
+            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="4" y1="9" x2="20" y2="9"></line>
+              <line x1="4" y1="15" x2="20" y2="15"></line>
+              <line x1="10" y1="3" x2="8" y2="21"></line>
+              <line x1="16" y1="3" x2="14" y2="21"></line>
+            </svg>
+            <input 
+              type="text" 
+              id="email-subject" 
+              name="subject"
+              class="form-control" 
+              placeholder="Test Email" 
+              value="Test Email"
+            >
+          </div>
+        </div>
+
+        <!-- Message Field -->
+        <div class="form-group" id="group-message">
+          <div class="label-row">
+            <label for="email-message" class="form-label">
+              <span>Message</span>
+              <span class="required-star">*</span>
+            </label>
+            <span class="char-counter" id="char-counter">0 / 10,000</span>
+          </div>
+          <div class="textarea-wrapper">
+            <textarea 
+              id="email-message" 
+              name="message"
+              class="form-control form-textarea" 
+              rows="5" 
+              placeholder="Hello, this is a test email." 
+              maxlength="10000"
+              required
+            ></textarea>
+          </div>
+          <div class="field-error" id="message-error" role="alert">Please enter a message.</div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-actions">
+          <button type="submit" id="btn-send" class="btn-primary">
+            <span class="btn-spinner" id="btn-spinner" hidden></span>
+            <svg class="btn-icon" id="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+            <span id="btn-text">Send Email</span>
+          </button>
+        </div>
+
+      </form>
+
+      <!-- Status Notification Banners -->
+      <div id="status-banner-success" class="status-banner success-banner" hidden role="status">
+        <div class="status-icon-wrapper">
+          <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <div class="status-content">
+          <h4 class="status-title">✓ Email sent successfully.</h4>
+          <p class="status-detail" id="success-recipient-detail">Recipient: test@example.com</p>
+          <p class="status-note" style="font-size: 12px; margin-top: 4px; opacity: 0.85; color: #a7f3d0;">💡 Tip: Check your Spam, Junk, or Promotions folder if it does not appear in your Primary Inbox immediately.</p>
+          <div id="preview-url-wrapper" class="preview-url-wrapper" hidden>
+            <a id="preview-url-link" href="#" target="_blank" rel="noopener noreferrer" class="preview-link">
+              🔗 Click to view live email preview on Ethereal
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div id="status-banner-error" class="status-banner error-banner" hidden role="alert">
+        <div class="status-icon-wrapper">
+          <svg class="status-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </div>
+        <div class="status-content">
+          <h4 class="status-title">✕ Failed to send email.</h4>
+          <p class="status-detail" id="error-message-detail">Please try again.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="app-footer">
+      <p>Simple Test Email Sender &bull; Developer & QA Utility</p>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

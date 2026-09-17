@@ -280,7 +280,6 @@ body {
   align-items: center;
   gap: 4px;
   margin-top: 2px;
-
 }
 
 .form-group.has-error .form-control {
@@ -353,14 +352,16 @@ body {
 }
 
 /* Status Banners */
-.status-banner {
-  margin-top: 20px;
-  padding: 16px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  animation: slideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+.status-success {
+  background-color: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: var(--success-text);
+}
+
+.status-error {
+  background-color: var(--error-bg);
+  border: 1px solid var(--error-border);
+  color: var(--error-text);
 }
 
 .success-banner {
@@ -405,23 +406,6 @@ body {
   font-size: 13px;
   opacity: 0.9;
   word-break: break-all;
-}
-
-.preview-url-wrapper {
-  margin-top: 8px;
-}
-
-.preview-link {
-  display: inline-block;
-  font-size: 13px;
-  font-weight: 500;
-  color: #38bdf8;
-  text-decoration: underline;
-  transition: var(--transition-fast);
-}
-
-.preview-link:hover {
-  color: #7dd3fc;
 }
 
 /* Animations */

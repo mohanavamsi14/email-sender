@@ -1,0 +1,14 @@
+{
+  "name": "simple-test-email-sender",
+  "version": "1.0.0",
+  "description": "Pure frontend email sender using EmailJS",
+  "homepage": "https://mohanavamsi14.github.io/email-sender",
+  "license": "MIT",
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
+  },
+  "scripts": {
+    "deploy": "npx gh-pages -d ."
+  }
+}
+

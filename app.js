@@ -17,16 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnIcon = document.getElementById('btn-icon');
   const btnText = document.getElementById('btn-text');
   
-  const bannerSuccess = document.getElementById('status-banner-success');
-  const bannerError = document.getElementById('status-banner-error');
-  const successRecipientDetail = document.getElementById('success-recipient-detail');
-  const errorMessageDetail = document.getElementById('error-message-detail');
-  
-  const previewUrlWrapper = document.getElementById('preview-url-wrapper');
-  const previewUrlLink = document.getElementById('preview-url-link');
+  const statusMessage = document.getElementById('status-message');
+
+
+
 
   const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const MAX_MESSAGE_LENGTH = 10000;
+  
+  // Initialize EmailJS with public key
+  emailjs.init('YNttiIyS4X3agM6GO');
 
   // Real-time character counter for Message field
   function updateCharCount() {
@@ -64,9 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Clear all status banners
   function hideStatusBanners() {
-    bannerSuccess.hidden = true;
-    bannerError.hidden = true;
-    previewUrlWrapper.hidden = true;
+    statusMessage.hidden = true;
   }
 
   // Client-side Validation
@@ -125,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Form Submit Handler
+  // Form Submit Handler (100% Pure Frontend via Web3Forms API)
   emailForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     hideStatusBanners();
@@ -134,49 +132,37 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    const payload = {
-      senderName: senderNameInput ? (senderNameInput.value.trim() || 'Test Email Sender') : 'Test Email Sender',
-      email: recipientEmailInput.value.trim(),
-      subject: subjectInput.value.trim() || 'Test Email',
-      message: messageInput.value.trim()
-    };
+    const senderName = senderNameInput ? (senderNameInput.value.trim() || 'Test Email Sender') : 'Test Email Sender';
+    const email = recipientEmailInput.value.trim();
+    const subject = subjectInput.value.trim() || 'Test Email';
+    const message = messageInput.value.trim();
 
     setLoadingState(true);
 
     try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
+      const serviceID = 'service_69oq3dm';
+      const templateID = 'template_0lxows6';
+      const result = await emailjs.send(serviceID, templateID, {
+        from_name: senderName,
+        to_email: email,
+        subject: subject,
+        message: message
       });
 
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        // Success
-        successRecipientDetail.textContent = `Recipient: ${data.recipient || payload.email}`;
-        
-        // If testing mode with Ethereal preview link
-        if (data.previewUrl) {
-          previewUrlLink.href = data.previewUrl;
-          previewUrlWrapper.hidden = false;
-        } else {
-          previewUrlWrapper.hidden = true;
-        }
-
-        bannerSuccess.hidden = false;
+      if (result && result.status === 200) {
+        statusMessage.textContent = `✅ Email sent successfully to ${email}`;
+        statusMessage.className = 'status-success';
+        statusMessage.hidden = false;
       } else {
-        // Error from API
-        errorMessageDetail.textContent = data.message || 'Please try again.';
-        bannerError.hidden = false;
+        statusMessage.textContent = `❌ Error: ${result?.text || 'Failed to send email.'}`;
+        statusMessage.className = 'status-error';
+        statusMessage.hidden = false;
       }
-
     } catch (err) {
-      console.error('Fetch error:', err);
-      errorMessageDetail.textContent = 'Network error or server unreachable. Please try again.';
-      bannerError.hidden = false;
+        console.error('EmailJS send error:', err);
+        statusMessage.textContent = `❌ Network error contacting email service. Please try again.`;
+        statusMessage.className = 'status-error';
+        statusMessage.hidden = false;
     } finally {
       setLoadingState(false);
     }
